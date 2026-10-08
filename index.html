@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Pandas Visualizer by KM — step through 25 pandas operations as animated DataFrames: selection, filtering, groupby, merge, pivot, reshaping and more."
+    />
+    <meta name="author" content="KM" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Pandas Visualizer · by KM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Set the theme before first paint, so a light-mode user never sees a
+      // dark flash (and vice versa) while the bundle loads.
+      (function () {
+        try {
+          var stored = localStorage.getItem("pandas-viz-theme");
+          var theme =
+            stored === "light" || stored === "dark"
+              ? stored
+              : window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark";
+          document.documentElement.classList.remove("dark", "light");
+          document.documentElement.classList.add(theme);
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (e) {
+          /* private mode or blocked storage: the default class stands */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
