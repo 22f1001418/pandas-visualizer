@@ -1,0 +1,6 @@
+# Nothing here is needed to build the site on Vercel.
+venv/
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store

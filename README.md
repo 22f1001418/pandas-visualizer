@@ -127,13 +127,41 @@ Framer Motion 11 · Zustand 5 · prism-react-renderer · lucide-react
 
 ## Deploying
 
-Any static host. The build output is `dist/`, there is no server component, and
-routing is hash-based so no rewrite rules are required.
+The build output is `dist/`, there is no server component, and routing is
+hash-based, so this runs on any static host.
+
+### Vercel (configured)
+
+`vercel.json` is committed, so there is nothing to configure in the dashboard:
+
+1. **Add New → Project** → import `22f1001418/pandas-visualizer`
+2. Vercel reads the config and detects Vite — leave every field as offered
+3. **Deploy**
+
+Pushes to `main` redeploy automatically; pull requests get preview URLs.
+
+What `vercel.json` sets:
+
+| Setting | Value | Why |
+| --- | --- | --- |
+| `framework` | `vite` | Pins detection instead of relying on inference |
+| `buildCommand` / `outputDirectory` | `npm run build` / `dist` | Explicit, so a dashboard change can't silently diverge |
+| `rewrites` | everything → `/index.html` | Defensive: routing is hash-based, but a stray path still lands on the app rather than a 404. Vercel checks the filesystem *before* rewrites, so real assets are unaffected |
+| `headers` | `/assets/*` immutable for a year; `index.html` must-revalidate | Asset filenames are content-hashed, so they can be cached forever; the HTML that points at them must not be |
+
+`engines.node` is `>=20` in `package.json`, and the CLI route works too:
+
+```bash
+npx vercel          # preview deployment
+npx vercel --prod   # production
+```
+
+### Other hosts
 
 - **Render / Netlify** — build `npm install && npm run build`, publish `dist`
-  (`public/_redirects` is already in place)
-- **GitHub Pages** — publish `dist`; set `base` in `vite.config.ts` to
-  `/<repo-name>/` if it is not served from the domain root
+  (`public/_redirects` is already in place for Netlify)
+- **GitHub Pages** — publish `dist`, and set `base` in `vite.config.ts` to
+  `/pandas-visualizer/`, since it is not served from the domain root
 
 ---
 
